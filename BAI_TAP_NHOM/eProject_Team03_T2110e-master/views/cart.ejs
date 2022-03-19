@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cart</title>
+    <%- include("head.ejs") %>
+    <link rel="stylesheet" href="/css/giohang.css">
+</head>
+<body>
+<header class="header section">
+    <%- include("header.ejs") %>
+</header>
+<section class="main section">
+    <div class="container_cart">
+        <div class="entry">
+            <h1>Your Shopping Cart</h1>
+            <ul class="logo_cart">
+                <a href="/">Home</a><span>/Your Shopping Cart</span>
+            </ul>
+        </div>
+    </div>
+    <div class="container_cart1">
+        <article class="content_cart">
+            <div class="entry">
+                <h2>Products</h2>
+            </div>
+            <div class="showmycart" id="showmycart">
+
+            </div>
+            <div class="thanhtoan">
+                <a href="/shop?AllProduct"><button class="shopping">CONTINUE SHOPPING</button></a>
+            </div>
+        </article>
+        <aside class="sidebar_cart">
+            <div class="block black">
+                <h2>Order Summary</h2>
+                <h4>Subtotal : $250.00</h4>
+            </div>
+            <div class="thanhtoan">
+                <a href="/"><button class="dongy">ADD NOTE TO YOUR ORDER</button></a>
+            </div>
+            <div class="block">
+                <h4>Shipping, taxes, and discounts will be calculated at checkout.</h4>
+            </div>
+            <div class="thanhtoan">
+                <a href="/"><button class="dongy">PROCEED TO CHECKOUT</button></a>
+            </div>
+            <div class="thanhtoan">
+                <a href="/"><button class="dongy">GET SHIPPING ESTIMATES</button></a>
+            </div>
+        </aside>
+    </div>
+</section>
+<footer class="footer section">
+    <%- include("footer.ejs") %>
+</footer>
+</body>
+<script type="text/javascript">
+    function cong(){
+        // for (let i=0;i<giohangcart.length;i++) {
+            var t = document.getElementById("textbox").value;
+            document.getElementById("textbox").value = parseInt(t) + 1;
+        // }
+    }
+    function tru(){
+        // for (let i=0;i<giohangcart.length;i++) {
+            var t = document.getElementById("textbox").value;
+            if (parseInt(t)>1){
+                document.getElementById("textbox").value=parseInt(t)-1;
+            }
+        // }
+    }
+
+    var ghcart = localStorage.getItem("giohang");
+    var giohangcart = JSON.parse(ghcart);
+    function showmycart(){
+        var ttgh = "";
+        var total = 0;
+        var tt = 0;
+        for (let i=0;i<giohangcart.length;i++){
+            if(giohangcart[i][6] == ""){
+                tt = parseInt(giohangcart[i][5]) * parseInt(giohangcart[i][7]);
+            }else {
+                tt = (parseInt(giohangcart[i][5])-parseInt(giohangcart[i][5])*parseInt(giohangcart[i][6])/100) * parseInt(giohangcart[i][7]);
+            }
+            total+=tt;
+            ttgh+= "<div class=\"img\">\n" +
+                "        <img src=\""+giohangcart[i][0]+"\" width=\"250px\" height=\"255px\" alt=\"\" >\n" +
+                "    </div>\n" +
+                "   <div class=\"closesp\">\n" +
+                "        <a href=\"#\" onclick=\"closesp()\">&#10005</a>\n" +
+                "    </div>\n" +
+                "    <div class=\"thongtin\">\n" +
+                "        <h3>"+giohangcart[i][1]+"</h3>\n" +
+                "        <p>"+giohangcart[i][2]+"</p>\n" +
+                "        <h4><span>$</span>"+ tt +"</h4>\n" +
+                "        <input class=\"minus is-form\" type=\"button\" onclick=\"tru(this)\" value=\"-\">\n" +
+                "        <input aria-label=\"quantity\" class=\"input-qty\" max=\"10\" min=\"1\" name=\"\" type=\"number\" value=\""+ giohangcart[i][7] +"\" id=\"textbox\">\n" +
+                "        <input class=\"plus is-form\" onclick=\"cong(this)\" type=\"button\" value=\"+\">\n" +
+                "    </div>";
+        }
+        ttgh += "<div class=\"total\">\n" +
+            "        <h4>Total : $"+ total +"</h4>\n" +
+            "    </div>";
+        document.getElementById("showmycart").innerHTML = ttgh;
+    }
+    showmycart();
+</script>
+</html>
